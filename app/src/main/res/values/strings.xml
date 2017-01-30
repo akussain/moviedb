@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MovieDB</string>
+    <string name="api_key">APIKEY</string>
+    <string name="error_message">Failed to get results, please try again.</string>
+    <string name="release_date">Release Date:</string>
+    <string name="sort_by">Sort By</string>
+    <string name="sory_by_highest_rated">Highest Rated</string>
+    <string name="sort_by_popular">Most Popular</string>
+</resources>
