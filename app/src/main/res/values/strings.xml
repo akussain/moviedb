@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">MovieDB</string>
-    <string name="api_key">11111</string>
     <string name="error_message">Failed to get results, please try again.</string>
     <string name="overview">Overview</string>
     <string name="release_date">Release Date: %s</string>

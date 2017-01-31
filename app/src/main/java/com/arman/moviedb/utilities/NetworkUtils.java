@@ -2,6 +2,9 @@ package com.arman.moviedb.utilities;
 
 import android.net.Uri;
 
+import com.arman.moviedb.BuildConfig;
+import com.arman.moviedb.SortType;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -19,10 +22,12 @@ public class NetworkUtils {
     final static String MOVIEDB_HIGHEST_RATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
 
     final static String API_KEY_PARAM = "api_key";
+    final static String API_KEY = BuildConfig.MOVIEDB_API_KEY;
 
-    public static URL buildUrl(String movieDbSearchQuery, String apiKey) {
+    public static URL buildUrl(SortType sortType) {
+        String movieDbSearchQuery = sortType.getUrl();
         Uri builtUri = Uri.parse(movieDbSearchQuery).buildUpon()
-                .appendQueryParameter(API_KEY_PARAM, apiKey)
+                .appendQueryParameter(API_KEY_PARAM, API_KEY)
                 .build();
 
         URL url = null;

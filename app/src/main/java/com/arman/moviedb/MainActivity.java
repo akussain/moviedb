@@ -47,9 +47,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         movieAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(movieAdapter);
 
-        loadMoviesData();
+        //loadMoviesData();
+        loadMovies(SortType.MOST_POPULAR);
     }
 
+    private void loadMovies(SortType sortType) {
+        SortType[] params = {sortType};
+        new FetchMovies().execute(params);
+    }
+    /*
     private void loadMoviesData() {
         String[] params = {MOVIEDB_POPULAR_URL};
         new FetchMovies().execute(params);
@@ -64,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         String[] params = {MOVIEDB_HIGHEST_RATED_URL};
         new FetchMovies().execute(params);
     }
-
+    */
     @Override
     public void onClick(Movie movie) {
         Class destinationClass = DetailActivity.class;
@@ -93,17 +99,19 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sort_popular:
-                sortByPopular();
+                //sortByPopular();
+                loadMovies(SortType.MOST_POPULAR);
                 return true;
             case R.id.sort_highest_rated:
-                sortByHighestRated();
+                //sortByHighestRated();
+                loadMovies(SortType.HIGHEST_RATED);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public class FetchMovies extends AsyncTask<String, Void, ArrayList<Movie>> {
+    public class FetchMovies extends AsyncTask<SortType, Void, ArrayList<Movie>> {
 
         @Override
         protected void onPreExecute() {
@@ -112,10 +120,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         @Override
-        protected ArrayList<Movie> doInBackground(String... params) {
-            String param = params[0];
-            String apiKey = getString(R.string.api_key);
-            URL moviesRequestUrl = NetworkUtils.buildUrl(param, apiKey);
+        protected ArrayList<Movie> doInBackground(SortType... params) {
+            SortType sortType = params[0];
+            URL moviesRequestUrl = NetworkUtils.buildUrl(sortType);
             ArrayList<Movie> movies = null;
             try {
                 String jsonMoviesResponse = NetworkUtils.getResponseFromHttpUrl(moviesRequestUrl);
