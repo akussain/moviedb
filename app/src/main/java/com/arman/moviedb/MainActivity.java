@@ -1,6 +1,5 @@
 package com.arman.moviedb;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +7,11 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.arman.moviedb.utilities.MovieDbJsonUtils;
 import com.arman.moviedb.utilities.NetworkUtils;
@@ -21,9 +21,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
-    final static String MOVIEDB_BASE_URL = "https://api.themoviedb.org/3/movie/";
     final static String MOVIEDB_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular";
-    final static String MOVIEDB_TOP_RATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
+    final static String MOVIEDB_HIGHEST_RATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
     final static int NUMBER_OF_COLUMNS = 2;
 
     private RecyclerView mRecyclerView;
@@ -56,6 +55,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         new FetchMovies().execute(params);
     }
 
+    private void sortByPopular() {
+        String[] params = {MOVIEDB_POPULAR_URL};
+        new FetchMovies().execute(params);
+    }
+
+    private void sortByHighestRated() {
+        String[] params = {MOVIEDB_HIGHEST_RATED_URL};
+        new FetchMovies().execute(params);
+    }
+
     @Override
     public void onClick(Movie movie) {
         Class destinationClass = DetailActivity.class;
@@ -72,6 +81,26 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private void showErrorMessage() {
         mRecyclerView.setVisibility(View.INVISIBLE);
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sort, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sort_popular:
+                sortByPopular();
+                return true;
+            case R.id.sort_highest_rated:
+                sortByHighestRated();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public class FetchMovies extends AsyncTask<String, Void, ArrayList<Movie>> {

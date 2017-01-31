@@ -2,8 +2,6 @@ package com.arman.moviedb.utilities;
 
 import android.net.Uri;
 
-import com.arman.moviedb.R;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -17,9 +15,8 @@ import java.util.Scanner;
 
 public class NetworkUtils {
 
-    final static String MOVIEDB_BASE_URL = "https://api.themoviedb.org/3/movie/";
     final static String MOVIEDB_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular";
-    final static String MOVIEDB_TOP_RATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
+    final static String MOVIEDB_HIGHEST_RATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
 
     final static String API_KEY_PARAM = "api_key";
 

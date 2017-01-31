@@ -12,7 +12,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private Movie movie;
     private ImageView moviePosterImageView;
-    private TextView mDisplayMovieTitle, mDisplayMovieOverview, mDisplayMovieReleaseDate;
+    private TextView mDisplayMovieTitle, mDisplayMovieOverview, mDisplayMovieReleaseDate, mDisplayMovieUserRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +23,7 @@ public class DetailActivity extends AppCompatActivity {
         mDisplayMovieTitle = (TextView) findViewById(R.id.tv_display_movie_title);
         mDisplayMovieOverview = (TextView) findViewById(R.id.tv_display_movie_overview);
         mDisplayMovieReleaseDate = (TextView) findViewById(R.id.tv_display_movie_release_date);
+        mDisplayMovieUserRating = (TextView) findViewById(R.id.tv_display_movie_rating);
 
         Intent intentThatStartedThisActivity = getIntent();
 
@@ -31,7 +32,8 @@ public class DetailActivity extends AppCompatActivity {
                 movie = (Movie) intentThatStartedThisActivity.getParcelableExtra("movie");
                 mDisplayMovieTitle.setText(movie.getTitle());
                 mDisplayMovieOverview.setText(movie.getOverview());
-                mDisplayMovieReleaseDate.setText(movie.getReleaseDate());
+                mDisplayMovieReleaseDate.setText(String.format(getString(R.string.release_date), movie.getReleaseDate()));
+                mDisplayMovieUserRating.setText(movie.getUserRating());
                 String moviePosterPath = movie.getPosterPath();
                 Picasso.with(this).load(moviePosterPath).into(moviePosterImageView);
             }

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -29,17 +28,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
-
     }
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public final TextView movieTextView;
         public final ImageView moviePosterImageView;
 
         public MovieAdapterViewHolder(View view) {
             super(view);
-            movieTextView = (TextView) view.findViewById(R.id.tv_movie_data);
             moviePosterImageView = (ImageView) view.findViewById(R.id.iv_movie_poster);//
             view.setOnClickListener(this);
         }
@@ -55,8 +51,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @Override
     public MovieAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         mContext = viewGroup.getContext();
-        //int layoutIdForListItem = R.layout.movie_list_item;
-        int layoutIdForListItem = R.layout.movie_list_view;
+        int layoutIdForListItem = R.layout.movie_list_item;
         LayoutInflater inflater = LayoutInflater.from(mContext);
         boolean shouldAttachToParentImmediately = false;
 
@@ -72,9 +67,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder movieAdapterViewHolder, int position) {
-        String movieTitle = movies.get(position).getTitle();
         String moviePosterPath = movies.get(position).getPosterPath();
-        //movieAdapterViewHolder.movieTextView.setText(movieTitle);
         Picasso.with(mContext).load(moviePosterPath).into(movieAdapterViewHolder.moviePosterImageView);
     }
 
