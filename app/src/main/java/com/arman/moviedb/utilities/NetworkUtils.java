@@ -18,9 +18,6 @@ import java.util.Scanner;
 
 public class NetworkUtils {
 
-    final static String MOVIEDB_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular";
-    final static String MOVIEDB_HIGHEST_RATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
-
     final static String API_KEY_PARAM = "api_key";
     final static String API_KEY = BuildConfig.MOVIEDB_API_KEY;
 

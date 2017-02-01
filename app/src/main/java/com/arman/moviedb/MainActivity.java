@@ -19,26 +19,24 @@ import com.arman.moviedb.utilities.NetworkUtils;
 import java.net.URL;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
-    final static String MOVIEDB_POPULAR_URL = "https://api.themoviedb.org/3/movie/popular";
-    final static String MOVIEDB_HIGHEST_RATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
     final static int NUMBER_OF_COLUMNS = 2;
 
-    private RecyclerView mRecyclerView;
+    @BindView(R.id.rv_movies) RecyclerView mRecyclerView;
     private MovieAdapter movieAdapter;
 
-    private TextView mErrorMessageDisplay;
-    private ProgressBar mLoadingIndicator;
+    @BindView(R.id.tv_error_message_display) TextView mErrorMessageDisplay;
+    @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
-        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+        ButterKnife.bind(this);
 
         LinearLayoutManager layoutManager = new GridLayoutManager(this, NUMBER_OF_COLUMNS);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -47,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         movieAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(movieAdapter);
 
-        //loadMoviesData();
         loadMovies(SortType.MOST_POPULAR);
     }
 
@@ -55,22 +52,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         SortType[] params = {sortType};
         new FetchMovies().execute(params);
     }
-    /*
-    private void loadMoviesData() {
-        String[] params = {MOVIEDB_POPULAR_URL};
-        new FetchMovies().execute(params);
-    }
 
-    private void sortByPopular() {
-        String[] params = {MOVIEDB_POPULAR_URL};
-        new FetchMovies().execute(params);
-    }
-
-    private void sortByHighestRated() {
-        String[] params = {MOVIEDB_HIGHEST_RATED_URL};
-        new FetchMovies().execute(params);
-    }
-    */
     @Override
     public void onClick(Movie movie) {
         Class destinationClass = DetailActivity.class;
@@ -99,11 +81,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sort_popular:
-                //sortByPopular();
                 loadMovies(SortType.MOST_POPULAR);
                 return true;
             case R.id.sort_highest_rated:
-                //sortByHighestRated();
                 loadMovies(SortType.HIGHEST_RATED);
                 return true;
             default:
