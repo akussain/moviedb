@@ -3,6 +3,8 @@ package com.arman.moviedb.utilities;
 import android.content.Context;
 
 import com.arman.moviedb.Movie;
+import com.arman.moviedb.Review;
+import com.arman.moviedb.Video;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,5 +49,65 @@ public class MovieDbJsonUtils {
         }
 
         return movies;
+    }
+
+    public static ArrayList<Video> getVideosListFromJson(Context context, String videosJsonString) throws JSONException {
+
+        final String VIDEO_LIST = "results";
+        final String MOVIE_ID = "id";
+        final String VIDEO_ID = MOVIE_ID;
+        final String NAME = "name";
+        final String SITE = "site";
+        final String SIZE = "size";
+        final String TYPE = "type";
+
+        ArrayList<Video> videos = null;
+
+        JSONObject videosJson = new JSONObject(videosJsonString);
+
+        JSONArray videosArray = videosJson.getJSONArray(VIDEO_LIST);
+        videos = new ArrayList<>(videosArray.length());
+
+        for(int i = 0; i < videosArray.length(); i++) {
+            JSONObject videoJson = videosArray.getJSONObject(i);
+            Video video = new Video();
+            video.setId(videoJson.getString(MOVIE_ID));
+            video.setSite(videoJson.getString(SITE));
+            video.setSize(videoJson.getInt(SIZE));
+            video.setType(videoJson.getString(TYPE));
+            video.setName(videoJson.getString(NAME));
+            video.setVideoId(videoJson.getString(VIDEO_ID));
+            videos.add(video);
+        }
+
+        return videos;
+    }
+
+    public static ArrayList<Review> getReviewsListFromJson(Context context, String reviewsJsonString) throws JSONException {
+
+        final String REVIEW_LIST = "results";
+        final String REVIEW_ID = "id";
+        final String AUTHOR = "author";
+        final String CONTENT = "content";
+        final String URL = "url";
+
+        ArrayList<Review> reviews = null;
+
+        JSONObject reviewsJson = new JSONObject(reviewsJsonString);
+
+        JSONArray reviewsArray = reviewsJson.getJSONArray(REVIEW_LIST);
+        reviews = new ArrayList<>(reviewsArray.length());
+
+        for(int i = 0; i < reviewsArray.length(); i++) {
+            JSONObject reviewJson = reviewsArray.getJSONObject(i);
+            Review review = new Review();
+            review.setId(reviewJson.getString(REVIEW_ID));
+            review.setAuthor(reviewJson.getString(AUTHOR));
+            review.setContent(reviewJson.getString(CONTENT));
+            review.setUrl(reviewJson.getString(URL));
+            reviews.add(review);
+        }
+
+        return reviews;
     }
 }

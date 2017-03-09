@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/review"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="16dp"
+    android:layout_marginTop="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/review_auhtor"
+        style="@style/ReviewsTextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        tools:text="Frank Ochieng"/>
+
+    <TextView
+        android:id="@+id/review_content"
+        style="@style/ReviewsTextView"
+        android:layout_marginTop="2dp"
+        android:maxLines="5"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        tools:text="All continues to be well in the Marvel Comics Universe as the film adaptation of another mischievous and majestic superhero from Stan Lee’s printed page empire emerges and reigns supreme on the big screen. The latest cure from the Marvel movie bag of explosive tricks is the entry of the dazzling and decorative **Doctor Strange**. Armed with a collection of notable performers, a convincing colorful scope of visual vibrancy and a hearty touch of spiritual and reflective potency the spellbinding **Doctor Strange** is an engaging and oddly sophisticated action-oriented comic book fantasy adding imaginative flavor to the typical escapist gem from the Marvel stable of powered personalities.\r\n\r\nSome may argue that **Doctor Strange** is merely another conveyor belt cinematic comics confection that follows a safe and similar makeup that constitutes the obligatory Marvel Comics movie foundation–excitable weirdness, overly splashes of wayward whimsy, copious characterizations attached to their brand of eccentric grandeur and larger-than-life gestures of dark and devious exploits grounded in the basic landscape of good versus evil. Listen, sometimes traveling down the conventional path of constructed and adventurous Marvel-made spectacles is not necessarily a bad thing to consider. After all, the well-known and more popular superhero icons such as _Spider-Man_, _The Incredible Hulk_, _Iron Man_, _The Avengers_, and _The X-Men_ for instance seem to benefit nicely from the anticipated formula that routinely delivers the entertaining goods for its avid core of fanboys. So why not wipe off the seemingly obscure and underrated **Doctor Strange** and provide the same kind of popcorn-pulsating mystique for blockbuster cinema?\r\n\r\n**Doctor Strange** started out as a comic book creation in 1963 by Steve Ditko and Stan Lee. Director Scott Derrickson (“Paradise Lost”, “The Exorcism of Emily Rose”, “Sinister”, “Deliver Us From Evil”) does an admirable job in giving shades of bizarre brilliance and magical manipulation to an unconventional Marvel comic book character hardly known for his capacity to translate his mystical mastery to celluloid with compelling curiosity. Derrickson, known primarily for his creative juices in the realm of horror fantasies, confidently serves up the off-kilter and hypnotic appeal of Dr. Stephen Strange as embodied by accomplished English actor Benedict Cumberbatch (“Black Mass”, “The Imitation Game”, “12 Years a Slave”). Interestingly, Derrickson and his handful of screenwriters craft **Doctor Strange** with a mind-blowing measurement of restraint and inquisitiveness. Indeed, **Doctor Strange** echoes its contemporary Marvel-established movies with predictable pluckiness to a certain extent but what is appreciated more is the uniqueness of the film’s ability to emphasize a cerebral superhero that is cut out of a different kind of creative cloth which feels quite distinctive from other brooding Marvel mavericks. Cumberbatch–mastering a rather effective American-accented sorcerer with skill–has injected a degree of inventive nobility and refinement that uplifts this calculating comic-book fantasy.\r\n\r\nCumberbatch’s egotistical Stephen Strange is an incredibly gifted neurosurgeon. His hands are truly miraculous tools of his medical trade and he takes pride in his abilities to treat the critical patients that have tremendous hope courtesy of his therapeutic capabilities. In a nutshell, Strange outshines his other surgical competitors because he is able to give to his patients on the operating table something other doctors cannot instantly muster up. However, cruel fate strikes its ugly head when Strange suffers the usage of his precious hands as a result of a horrific car wreck. The nerves in his hands are destroyed and the non-functioning of his limbs is an awful reminder that his surgical talents are something of the immediate past.\r\n\r\nAs Strange delves into self-pity and surfacing depression he cannot see just how supportive his fellow physician Christine Palmer (Rachel McAdam) is toward him."/>
+
+</LinearLayout>

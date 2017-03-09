@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvTrailersLabel"
+        style="@style/TrailersAndReviews"
+        android:text="@string/trailers_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+    <HorizontalScrollView
+        android:id="@+id/trailers_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/trailers"
+            style="@style/TrailersAndReviews"
+            android:orientation="horizontal"
+            android:visibility="gone"/>
+
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/tvReviewsLabel"
+        style="@style/TrailersAndReviews"
+        android:text="@string/reviews_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+    <LinearLayout
+        android:id="@+id/reviews"
+        style="@style/TrailersAndReviews"
+        android:orientation="vertical" />
+
+</LinearLayout>

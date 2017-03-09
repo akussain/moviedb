@@ -17,6 +17,11 @@
             <item
                 android:id="@+id/sort_highest_rated"
                 android:title="@string/sort_by_highest_rated"/>
+
+            <item
+                android:id="@+id/sort_favorites"
+                android:title="@string/sort_by_favorites"/>
+
         </group>
 
     </item>

@@ -3,7 +3,10 @@
     <string name="error_message">Failed to get results, please try again.</string>
     <string name="overview">Overview</string>
     <string name="release_date">Release Date: %s</string>
+    <string name="reviews_label">Reviews</string>
     <string name="sort_by">Sort By</string>
     <string name="sort_by_highest_rated">Highest Rated</string>
     <string name="sort_by_popular">Most Popular</string>
+    <string name="sort_by_favorites">Favorites</string>
+    <string name="trailers_label">Trailers</string>
 </resources>
