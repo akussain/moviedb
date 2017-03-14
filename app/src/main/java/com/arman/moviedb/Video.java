@@ -104,4 +104,8 @@ public class Video implements Parcelable {
     public void setType(String type) {
         this.type = type;
     }
+
+    public String getVideoUrl(Video video) {
+        return String.format("http://www.youtube.com/watch?v=%1$s", video.getVideoId());
+    }
 }
