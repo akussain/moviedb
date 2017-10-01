@@ -13,10 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-/**
- * Created by arman on 23/01/17.
- */
-
 public class NetworkUtils {
 
     final static String API_KEY_PARAM = "api_key";
