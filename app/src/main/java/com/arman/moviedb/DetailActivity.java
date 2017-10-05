@@ -1,10 +1,9 @@
 package com.arman.moviedb;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.arman.moviedb.data.FavoriteMoviesContract;
 import com.arman.moviedb.data.FavoriteMoviesDbHelper;
 import com.arman.moviedb.utilities.MovieDbJsonUtils;
 import com.arman.moviedb.utilities.NetworkUtils;
@@ -31,7 +29,7 @@ import butterknife.ButterKnife;
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Movie movie;
-    private SQLiteDatabase favoritesDb;
+    FavoriteMoviesDbHelper mDbHelper;
 
     @BindView(R.id.iv_display_poster)
     ImageView moviePosterImageView;
@@ -53,6 +51,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     TextView mReviewsLabel;
     @BindView(R.id.reviews)
     LinearLayout reviews;
+    @BindView(R.id.favorite)
+    FloatingActionButton mFavoritesBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +60,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
-        FavoriteMoviesDbHelper dbHelper = new FavoriteMoviesDbHelper(this);
-        favoritesDb = dbHelper.getWritableDatabase();
+        mDbHelper = new FavoriteMoviesDbHelper(this);
 
         Intent intentThatStartedThisActivity = getIntent();
 
@@ -72,6 +71,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 mDisplayMovieOverview.setText(movie.getOverview());
                 mDisplayMovieReleaseDate.setText(String.format(getString(R.string.release_date), movie.getReleaseDate()));
                 mDisplayMovieUserRating.setText(movie.getUserRating());
+                if(isFavoriteMovie(movie.getId())) {
+                    showFavoriteButton();
+                    movie.setFavorite(true);
+                }
                 String moviePosterPath = movie.getPosterPath();
                 Picasso.with(this)
                         .load(moviePosterPath)
@@ -82,6 +85,22 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 new FetchMovieTrailers(String.valueOf(movie.getId()), DetailType.VIDEOS).execute();
                 new FetchMovieReviews(String.valueOf(movie.getId()), DetailType.REVIEWS).execute();
             }
+
+            mFavoritesBtn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (movie.isFavorite()) {
+                        if (removeMovieFromFavorites(movie.getId())) {
+                            movie.setFavorite(false);
+                            showNotFavoriteButton();
+                        }
+                    } else {
+                        if (addMovieToFavorites(movie)) {
+                            movie.setFavorite(true);
+                            showFavoriteButton();
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -105,17 +124,19 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         startActivity(playTrailerIntent);
     }
 
-    private void addMovieToFavorites(Movie movie) {
-        if(movie != null) {
-            ContentValues cv = new ContentValues();
-            cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_ID, movie.getId());
-            cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_OVERVIEW, movie.getOverview());
-            cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_POSTER_PATH, movie.getPosterPath());
-            cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
-            cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_TITLE, movie.getTitle());
-            cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_USER_RATING, movie.getUserRating());
-            favoritesDb.insert(FavoriteMoviesContract.FavoriteMoviesEntry.TABLE_NAME, null, cv);
+    private boolean addMovieToFavorites(Movie movie) {
+        if (movie != null) {
+            return mDbHelper.insertFavoriteMovie(movie) > 0;
         }
+        return false;
+    }
+
+    private boolean removeMovieFromFavorites(int movieId) {
+        return mDbHelper.deleteFavoriteMovie(movieId) > 0;
+    }
+
+    private boolean isFavoriteMovie(int movieId) {
+        return mDbHelper.isFavorite(movieId) > 0;
     }
 
     private void showTrailers(List<Video> trailers) {
@@ -167,6 +188,14 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 this.reviews.addView(reviewContainer);
             }
         }
+    }
+
+    private void showFavoriteButton() {
+        mFavoritesBtn.setImageResource(R.drawable.ic_favorite);
+    }
+
+    private void showNotFavoriteButton() {
+        mFavoritesBtn.setImageResource(R.drawable.ic_non_favorite);
     }
 
     public class FetchMovieTrailers extends AsyncTask<Void, Void, ArrayList<Video>> {

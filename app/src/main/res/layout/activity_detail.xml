@@ -33,6 +33,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrolling_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -92,7 +93,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:src="@drawable/ic_non_favorite"
         app:elevation="6dp"
+        app:layout_anchor="@id/scrolling_container"
         app:layout_anchorGravity="bottom|right|end"
         app:pressedTranslationZ="12dp"
         app:rippleColor="@android:color/white"/> <!-- android:src="@drawable/ic_favorite_border_white_24dp"  app:layout_anchor="@id/scrolling_container" -->

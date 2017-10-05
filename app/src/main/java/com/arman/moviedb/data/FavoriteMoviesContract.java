@@ -2,10 +2,6 @@ package com.arman.moviedb.data;
 
 import android.provider.BaseColumns;
 
-/**
- * Created by akussainov on 3/10/17.
- */
-
 public class FavoriteMoviesContract {
 
     public static final class FavoriteMoviesEntry implements BaseColumns {
@@ -17,5 +13,4 @@ public class FavoriteMoviesContract {
         public static final String COLUMN_OVERVIEW = "overview";
         public static final String COLUMN_RELEASE_DATE = "releaseDate";
     }
-
 }

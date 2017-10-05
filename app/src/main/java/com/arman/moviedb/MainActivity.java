@@ -1,20 +1,21 @@
 package com.arman.moviedb;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.arman.moviedb.data.FavoriteMoviesContract;
+import com.arman.moviedb.data.FavoriteMoviesDbHelper;
 import com.arman.moviedb.utilities.MovieDbJsonUtils;
 import com.arman.moviedb.utilities.NetworkUtils;
 
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     final static int NUMBER_OF_COLUMNS = 2;
 
+    FavoriteMoviesDbHelper mDbHelper;
+
     @BindView(R.id.rv_movies) RecyclerView mRecyclerView;
     private MovieAdapter movieAdapter;
 
@@ -40,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        mDbHelper = new FavoriteMoviesDbHelper(this);
+
         LinearLayoutManager layoutManager = new GridLayoutManager(this, NUMBER_OF_COLUMNS);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -51,8 +56,31 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     private void loadMovies(SortType sortType) {
-        SortType[] params = {sortType};
-        new FetchMovies().execute(params);
+        if (SortType.FAVORITES == sortType) {
+            loadFavoriteMovies();
+        } else {
+            SortType[] params = {sortType};
+            new FetchMovies().execute(params);
+        }
+    }
+
+    private void loadFavoriteMovies() {
+        showMovieDataView();
+        Cursor cursor = mDbHelper.getAllFavorites();
+        ArrayList<Movie> favoriteMovies = new ArrayList<>();
+        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            Movie movie = new Movie();
+            movie.setId(cursor.getInt(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_ID)));
+            movie.setTitle(cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_TITLE)));
+            movie.setOverview(cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_OVERVIEW)));
+            movie.setPosterPath(cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_POSTER_PATH)));
+            movie.setReleaseDate(cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_RELEASE_DATE)));
+            movie.setUserRating(cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_USER_RATING)));
+            movie.setFavorite(true);
+            favoriteMovies.add(movie);
+        }
+        cursor.close();
+        movieAdapter.setMovies(favoriteMovies);
     }
 
     @Override
@@ -87,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 return true;
             case R.id.sort_highest_rated:
                 loadMovies(SortType.HIGHEST_RATED);
+                return true;
+            case R.id.sort_favorites:
+                loadMovies(SortType.FAVORITES);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -3,10 +3,6 @@ package com.arman.moviedb;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by arman on 23/01/17.
- */
-
 public class Movie implements Parcelable {
 
     private Integer id;
@@ -15,14 +11,16 @@ public class Movie implements Parcelable {
     private String userRating;
     private String posterPath;
     private String overview;
+    private boolean favorite;
 
-    public Movie(Integer mId, String mTitle, String mReleaseDate, String mUserRating, String mPoster, String mOverview) {
+    public Movie(Integer mId, String mTitle, String mReleaseDate, String mUserRating, String mPoster, String mOverview, boolean mFavorite) {
         id = mId;
         title = mTitle;
         releaseDate = mReleaseDate;
         userRating = mUserRating;
         posterPath = mPoster;
         overview = mOverview;
+        favorite = mFavorite;
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new
@@ -50,6 +48,7 @@ public class Movie implements Parcelable {
         out.writeString(userRating);
         out.writeString(posterPath);
         out.writeString(overview);
+        out.writeByte((byte) (favorite ? 1 : 0));
     }
 
     public void readFromParcel(Parcel in) {
@@ -59,6 +58,7 @@ public class Movie implements Parcelable {
         userRating = in.readString();
         posterPath = in.readString();
         overview = in.readString();
+        favorite = in.readByte() != 0;
     }
 
     @Override
@@ -112,5 +112,13 @@ public class Movie implements Parcelable {
 
     public void setOverview(String overview) {
         this.overview = overview;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }
