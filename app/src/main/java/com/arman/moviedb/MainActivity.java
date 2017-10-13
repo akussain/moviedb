@@ -1,160 +1,58 @@
 package com.arman.moviedb;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.arman.moviedb.data.FavoriteMoviesContract;
-import com.arman.moviedb.data.FavoriteMoviesDbHelper;
-import com.arman.moviedb.utilities.MovieDbJsonUtils;
-import com.arman.moviedb.utilities.NetworkUtils;
+public class MainActivity extends AppCompatActivity implements MovieListFragment.Callback {
 
-import java.net.URL;
-import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
-
-    final static int NUMBER_OF_COLUMNS = 2;
-
-    FavoriteMoviesDbHelper mDbHelper;
-
-    @BindView(R.id.rv_movies) RecyclerView mRecyclerView;
-    private MovieAdapter movieAdapter;
-
-    @BindView(R.id.tv_error_message_display) TextView mErrorMessageDisplay;
-    @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
-        mDbHelper = new FavoriteMoviesDbHelper(this);
-
-        LinearLayoutManager layoutManager = new GridLayoutManager(this, NUMBER_OF_COLUMNS);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
-
-        movieAdapter = new MovieAdapter(this);
-        mRecyclerView.setAdapter(movieAdapter);
-
-        loadMovies(SortType.MOST_POPULAR);
-    }
-
-    private void loadMovies(SortType sortType) {
-        if (SortType.FAVORITES == sortType) {
-            loadFavoriteMovies();
+        if (findViewById(R.id.moviedb_linear_layout) != null) {
+            mTwoPane = true;
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.detail_container, new MovieDetailsFragment())
+                        .commit();
+            }
         } else {
-            SortType[] params = {sortType};
-            new FetchMovies().execute(params);
+            mTwoPane = false;
         }
-    }
-
-    private void loadFavoriteMovies() {
-        showMovieDataView();
-        Cursor cursor = mDbHelper.getAllFavorites();
-        ArrayList<Movie> favoriteMovies = new ArrayList<>();
-        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            Movie movie = new Movie();
-            movie.setId(cursor.getInt(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_ID)));
-            movie.setTitle(cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_TITLE)));
-            movie.setOverview(cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_OVERVIEW)));
-            movie.setPosterPath(cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_POSTER_PATH)));
-            movie.setReleaseDate(cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_RELEASE_DATE)));
-            movie.setUserRating(cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_USER_RATING)));
-            movie.setFavorite(true);
-            favoriteMovies.add(movie);
-        }
-        cursor.close();
-        movieAdapter.setMovies(favoriteMovies);
     }
 
     @Override
-    public void onClick(Movie movie) {
+    public void onMoviesLoaded(Movie movie) {
+        if (mTwoPane) {
+            loadMovieDetailsFragment(movie);
+        }
+    }
+
+    @Override
+    public void onMovieClicked(Movie movie) {
+        if (mTwoPane) {
+            loadMovieDetailsFragment(movie);
+        } else {
+            startMovieDetailsActivity(movie);
+        }
+    }
+
+    private void startMovieDetailsActivity(Movie movie) {
         Class destinationClass = DetailActivity.class;
         Intent intentDetailActivity = new Intent(this, destinationClass);
-        intentDetailActivity.putExtra("movie", movie);
+        intentDetailActivity.putExtra(MovieDetailsFragment.MOVIE, movie);
         startActivity(intentDetailActivity);
     }
 
-    private void showMovieDataView() {
-        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-    }
-
-    private void showErrorMessage() {
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorMessageDisplay.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.sort, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.sort_popular:
-                loadMovies(SortType.MOST_POPULAR);
-                return true;
-            case R.id.sort_highest_rated:
-                loadMovies(SortType.HIGHEST_RATED);
-                return true;
-            case R.id.sort_favorites:
-                loadMovies(SortType.FAVORITES);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    public class FetchMovies extends AsyncTask<SortType, Void, ArrayList<Movie>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected ArrayList<Movie> doInBackground(SortType... params) {
-            SortType sortType = params[0];
-            URL moviesRequestUrl = NetworkUtils.buildUrl(sortType);
-            ArrayList<Movie> movies = null;
-            try {
-                String jsonMoviesResponse = NetworkUtils.getResponseFromHttpUrl(moviesRequestUrl);
-                movies = MovieDbJsonUtils.getMoviesListFromJson(MainActivity.this, jsonMoviesResponse);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return movies;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Movie> movies) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if(movies != null && movies.size() > 0) {
-                showMovieDataView();
-                movieAdapter.setMovies(movies);
-            } else {
-                showErrorMessage();
-            }
-        }
+    private void loadMovieDetailsFragment(Movie movie) {
+        MovieDetailsFragment newFragment = new MovieDetailsFragment();
+        newFragment.setMovie(movie);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.detail_container, newFragment)
+                .commit();
     }
 }

@@ -10,10 +10,11 @@ public class Movie implements Parcelable {
     private String releaseDate;
     private String userRating;
     private String posterPath;
+    private String backdropPath;
     private String overview;
     private boolean favorite;
 
-    public Movie(Integer mId, String mTitle, String mReleaseDate, String mUserRating, String mPoster, String mOverview, boolean mFavorite) {
+    public Movie(Integer mId, String mTitle, String mReleaseDate, String mUserRating, String mPoster, String mOverview, boolean mFavorite, String mBackdrop) {
         id = mId;
         title = mTitle;
         releaseDate = mReleaseDate;
@@ -21,6 +22,7 @@ public class Movie implements Parcelable {
         posterPath = mPoster;
         overview = mOverview;
         favorite = mFavorite;
+        backdropPath = mBackdrop;
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new
@@ -47,6 +49,7 @@ public class Movie implements Parcelable {
         out.writeString(releaseDate);
         out.writeString(userRating);
         out.writeString(posterPath);
+        out.writeString(backdropPath);
         out.writeString(overview);
         out.writeByte((byte) (favorite ? 1 : 0));
     }
@@ -57,6 +60,7 @@ public class Movie implements Parcelable {
         releaseDate = in.readString();
         userRating = in.readString();
         posterPath = in.readString();
+        backdropPath = in.readString();
         overview = in.readString();
         favorite = in.readByte() != 0;
     }
@@ -120,5 +124,13 @@ public class Movie implements Parcelable {
 
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
     }
 }

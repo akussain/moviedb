@@ -70,6 +70,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         Picasso.with(mContext).load(moviePosterPath).into(movieAdapterViewHolder.moviePosterImageView);
     }
 
+    public ArrayList<Movie> getMovies() {
+        return movies;
+    }
+
     public void setMovies(ArrayList<Movie> movieList) {
         movies = movieList;
         notifyDataSetChanged();

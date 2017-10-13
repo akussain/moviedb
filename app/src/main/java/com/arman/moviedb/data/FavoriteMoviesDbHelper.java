@@ -12,7 +12,7 @@ import com.arman.moviedb.Movie;
 public class FavoriteMoviesDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "favorites.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     public FavoriteMoviesDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,6 +27,7 @@ public class FavoriteMoviesDbHelper extends SQLiteOpenHelper {
                 FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_USER_RATING + " TEXT NOT NULL, " +
                 FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_POSTER_PATH + " TEXT, " +
+                FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_BACKDROP_PATH + " TEXT, " +
                 FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_OVERVIEW + " TEXT NOT NULL, " +
                 FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL" +
                 ");";
@@ -46,6 +47,7 @@ public class FavoriteMoviesDbHelper extends SQLiteOpenHelper {
         cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_ID, movie.getId());
         cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_OVERVIEW, movie.getOverview());
         cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_POSTER_PATH, movie.getPosterPath());
+        cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_BACKDROP_PATH, movie.getBackdropPath());
         cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
         cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_TITLE, movie.getTitle());
         cv.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_USER_RATING, movie.getUserRating());

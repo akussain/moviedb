@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/review_auhtor"
         style="@style/ReviewsTextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         tools:text="Frank Ochieng"/>
 
     <TextView
