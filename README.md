@@ -1,7 +1,7 @@
 # moviedb
-Android app that shows popular movies. The sort order can be by most popular or by highest-rated
+Android app that shows popular movies. The sort order can be by most popular, highest-rated or favorites
 
-Replace YOUR_API_KEY in gradle.properties with your themoviedb.org API key.
+Replace `YOUR_API_KEY` in `gradle.properties` with your `themoviedb.org API key`
 
 ![Alt text](https://s1.postimg.org/1x3ej1hv7j/image.png "List of movies")
 ![Alt text](https://s1.postimg.org/3zj773po1b/image.png "Movie details")
