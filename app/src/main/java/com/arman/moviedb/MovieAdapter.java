@@ -31,7 +31,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.iv_movie_poster) ImageView moviePosterImageView;
+        @BindView(R.id.iv_movie_poster)
+        ImageView moviePosterImageView;
 
         public MovieAdapterViewHolder(View view) {
             super(view);
@@ -65,9 +66,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     }
 
     @Override
-    public void onBindViewHolder(MovieAdapterViewHolder movieAdapterViewHolder, int position) {
+    public void onBindViewHolder(final MovieAdapterViewHolder movieAdapterViewHolder, int position) {
         String moviePosterPath = movies.get(position).getPosterPath();
-        Picasso.with(mContext).load(moviePosterPath).into(movieAdapterViewHolder.moviePosterImageView);
+        Picasso.with(mContext)
+                .load(moviePosterPath)
+                .into(movieAdapterViewHolder.moviePosterImageView);
     }
 
     public ArrayList<Movie> getMovies() {

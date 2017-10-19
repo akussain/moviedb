@@ -5,4 +5,5 @@
     <dimen name="loading_indicator_size">42dp</dimen>
     <dimen name="video_item_size">150dp</dimen>
     <dimen name="video_item_margin_size">16dp</dimen>
+    <dimen name="poster_item_size">260dp</dimen>
 </resources>

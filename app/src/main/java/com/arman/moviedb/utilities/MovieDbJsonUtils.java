@@ -59,6 +59,7 @@ public class MovieDbJsonUtils {
         final String SITE = "site";
         final String SIZE = "size";
         final String TYPE = "type";
+        final String KEY = "key";
 
         ArrayList<Video> videos = null;
 
@@ -76,6 +77,7 @@ public class MovieDbJsonUtils {
             video.setType(videoJson.getString(TYPE));
             video.setName(videoJson.getString(NAME));
             video.setVideoId(videoJson.getString(VIDEO_ID));
+            video.setVideoKey(videoJson.getString(KEY));
             videos.add(video);
         }
 

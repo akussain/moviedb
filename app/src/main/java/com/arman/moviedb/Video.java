@@ -3,9 +3,7 @@ package com.arman.moviedb;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by arman on 07/03/17.
- */
+import com.arman.moviedb.utilities.NetworkUtils;
 
 public class Video implements Parcelable {
 
@@ -15,6 +13,7 @@ public class Video implements Parcelable {
     private int size;
     private String type;
     private String videoId;
+    private String videoKey;
 
     public Video() {}
 
@@ -41,6 +40,7 @@ public class Video implements Parcelable {
         out.writeInt(size);
         out.writeString(type);
         out.writeString(videoId);
+        out.writeString(videoKey);
     }
 
     public void readFromParcel(Parcel in) {
@@ -50,6 +50,7 @@ public class Video implements Parcelable {
         size = in.readInt();
         type = in.readString();
         videoId = in.readString();
+        videoKey = in.readString();
     }
 
     @Override
@@ -105,7 +106,19 @@ public class Video implements Parcelable {
         this.type = type;
     }
 
-    public String getVideoUrl(Video video) {
-        return String.format("http://www.youtube.com/watch?v=%1$s", video.getVideoId());
+    public String getVideoKey() {
+        return videoKey;
+    }
+
+    public void setVideoKey(String videoKey) {
+        this.videoKey = videoKey;
+    }
+
+    public static String getVideoUrl(Video video) {
+        return String.format(NetworkUtils.YOUTUBE_VIDEO_URL, video.getVideoKey());
+    }
+
+    public static String getThumbnailUrl(Video video) {
+        return String.format(NetworkUtils.YOUTUBE_THUMBNAIL_URL, video.getVideoKey());
     }
 }

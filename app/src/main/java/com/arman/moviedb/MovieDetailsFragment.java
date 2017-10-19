@@ -26,6 +26,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.arman.moviedb.Video.getThumbnailUrl;
+
 public class MovieDetailsFragment extends Fragment implements View.OnClickListener {
 
     public static final String MOVIE = "movie";
@@ -156,11 +158,11 @@ public class MovieDetailsFragment extends Fragment implements View.OnClickListen
             for(Video trailer : trailers) {
                 View trailerThumbContainer = inflater.inflate(R.layout.video, this.trailers, false);
                 ImageView trailerThumbView = ButterKnife.findById(trailerThumbContainer, R.id.video_thumb);
-                trailerThumbView.setTag(trailer.getVideoUrl(trailer));
+                trailerThumbView.setTag(Video.getVideoUrl(trailer));
                 trailerThumbView.requestLayout();
                 trailerThumbView.setOnClickListener(this);
                 picasso
-                        .load(trailer.getVideoId())
+                        .load(Video.getThumbnailUrl(trailer))
                         .resizeDimen(R.dimen.video_item_size, R.dimen.video_item_size)
                         .centerCrop()
                         .placeholder(R.color.colorPrimary)

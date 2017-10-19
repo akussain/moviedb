@@ -19,6 +19,9 @@ public class NetworkUtils {
     final static String API_KEY = BuildConfig.MOVIEDB_API_KEY;
     final static String MOVIE_DETAIL_PATH = "https://api.themoviedb.org/3/movie";
 
+    public static final String YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=%1$s";
+    public static final String YOUTUBE_THUMBNAIL_URL = "http://img.youtube.com/vi/%1$s/0.jpg";
+
     public static URL buildUrl(SortType sortType) {
         String movieDbSearchQuery = sortType.getUrl();
         Uri builtUri = Uri.parse(movieDbSearchQuery).buildUpon()
